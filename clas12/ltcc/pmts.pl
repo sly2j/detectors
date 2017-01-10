@@ -66,8 +66,8 @@
 			$WCr1inner[$n] = $parameters{"ltcc.wc.s$s"."_r1inner"}; 
 			$WCr2inner[$n] = $parameters{"ltcc.wc.s$s"."_r2inner"};
 			$WCzouter[$n] = $parameters{"ltcc.wc.s$s"."_zouter"};  
-			$WCr1outer[$n] = $WCr1inner[$n] + 1;
-			$WCr2outer[$n] = $WCr2inner[$n] + 1;
+			$WCr1outer[$n] = $WCr1inner[$n] - 1;
+			$WCr2outer[$n] = $WCr2inner[$n] - 1;
 			$WCzinner[$n] = $WCzouter[$n] + 0.01;
 			
 			# 90 - theta of center of ltcc. segment
@@ -244,75 +244,9 @@
 				my $geo_pos_y_l = $y0[$n-1] - $pos_yp_l;
 				my $geo_pos_z_l =  - $pos_zp_l;
 
-				%detector = init_det();
-				$detector{"name"}        = "cone_s$s"."right_inner$n";
-				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
-				$detector{"description"} = "cone right inner $n";
-				$detector{"pos"}         = "0*cm 0*cm 0*cm";
-				$detector{"rotation"}    = "0*deg 0*deg 0*deg";
-				$detector{"col"}         = "558844";
-				$detector{"type"}        = "Paraboloid";
-				$detector{"dimensions"}  = $swcinnerdim;
-				$detector{"material"}    = "Component";
-				print_det(\%configuration, \%detector);
-	
-	
-				%detector = init_det();
-				$detector{"name"}        = "cone_s$s"."right_outer$n";
-				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
-				$detector{"description"} = "cone right outer $n";
-				$detector{"pos"}         = "0*cm 0*cm 0*cm";
-				$detector{"rotation"}    = "0*deg 0*deg 0*deg";
-				$detector{"col"}         = "558844";
-				$detector{"type"}        = "Paraboloid";
-				$detector{"dimensions"}  = $swcouterdim;
-				$detector{"material"}    = "Component";
-				print_det(\%configuration, \%detector);
-	
-			
-				%detector = init_det();
-				$detector{"name"}        = "cone_s$s"."right_$n";
-				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
-				$detector{"description"} = "combined cone right $n";
-				$detector{"pos"}         = "$geo_pos_x_r*cm $geo_pos_y_r*cm $geo_pos_z_r*cm";
-				$detector{"rotation"}    = "-$phi*deg $theta*deg -$psi*deg";
-				$detector{"color"}       = "b87333";
-				$detector{"type"}        = "Operation:  cone_s$s"."right_outer$n - cone_s$s"."right_inner$n ";
-				$detector{"material"}    = "Air_Opt";
-				$detector{"style"}       = "1";
-				$detector{"sensitivity"}    = "mirror: ltcc_AlMgF2";
-				$detector{"hit_type"}       = "mirror";
-				$detector{"identifiers"} = "sector manual $s side manual 1 segment manual $n";
-				print_det(\%configuration, \%detector);
-			
-	
-				%detector = init_det();
-				$detector{"name"}        = "cone_s$s"."left_inner$n";
-				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
-				$detector{"description"} = "cone left inner $n";
-				$detector{"pos"}         = "0*cm 0*cm 0*cm";
-				$detector{"rotation"}    = "0*deg 0*deg 0*deg";
-				$detector{"col"}         = "66bbff";
-				$detector{"type"}        = "Paraboloid";
-				$detector{"dimensions"}  = $swcinnerdim;
-				$detector{"material"}    = "Component";
-				print_det(\%configuration, \%detector);
-	
-			
-	
-				%detector = init_det();
-				$detector{"name"}        = "cone_s$s"."left_outer$n";
-				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
-				$detector{"description"} = "cone left outer $n";
-				$detector{"pos"}         = "0*cm 0*cm 0*cm";
-				$detector{"rotation"}    = "0*deg 0*deg 0*deg";
-				$detector{"col"}         = "558844";
-				$detector{"type"}        = "Paraboloid";
-				$detector{"dimensions"}  = $swcouterdim;
-				$detector{"material"}    = "Component";
-				print_det(\%configuration, \%detector);
-	
-			
+				
+
+
 				%detector = init_det();
 				$detector{"name"}        = "cone_s$s"."left_$n";
 				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
@@ -320,12 +254,29 @@
 				$detector{"pos"}         = "$geo_pos_x_l*cm $geo_pos_y_l*cm $geo_pos_z_l*cm";
 				$detector{"rotation"}    = "-$phi*deg -$theta*deg -$psi*deg";
 				$detector{"color"}       = "b87333";
-				$detector{"type"}        = "Operation:  cone_s$s"."left_outer$n - cone_s$s"."left_inner$n";
+				$detector{"type"}        = "Cons";
+				$detector{"dimensions"}  = "$WCr1outer[$n-1]*cm $WCr1inner[$n-1]*cm  $WCr2outer[$n-1]*cm $WCr2inner[$n-1]*cm $WCzouter[$n-1]*cm 0*deg 360*deg ";
 				$detector{"material"}    = "Air_Opt";
 				$detector{"style"}       = "1";
    				$detector{"sensitivity"}    = "mirror: ltcc_AlMgF2";
 				$detector{"hit_type"}       = "mirror";
 				$detector{"identifiers"} = "sector manual $s side manual 2 segment manual $n";
+				print_det(\%configuration, \%detector);
+
+				%detector = init_det();
+				$detector{"name"}        = "cone_s$s"."right_$n";
+				$detector{"mother"}      = "segment_pmt_s$s"."_$n";
+				$detector{"description"} = "combined cone right $n";
+				$detector{"pos"}         = "$geo_pos_x_r*cm $geo_pos_y_r*cm $geo_pos_z_r*cm";
+				$detector{"rotation"}    = "-$phi*deg $theta*deg -$psi*deg";
+				$detector{"color"}       = "b87333";
+				$detector{"type"}        = "Cons ";
+				$detector{"dimensions"}  = "$WCr1outer[$n-1]*cm $WCr1inner[$n-1]*cm $WCr2outer[$n-1]*cm $WCr2inner[$n-1]*cm $WCzouter[$n-1]*cm 0*deg 360*deg";
+				$detector{"material"}    = "Air_Opt";
+				$detector{"style"}       = "1";
+				$detector{"sensitivity"}    = "mirror: ltcc_AlMgF2";
+				$detector{"hit_type"}       = "mirror";
+				$detector{"identifiers"} = "sector manual $s side manual 1 segment manual $n";
 				print_det(\%configuration, \%detector);
 
 				my $l_wm = $WCzouter[$n-1] + 3 ;
